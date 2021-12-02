@@ -1,0 +1,17 @@
+plugins {
+    id 'groovy'
+    id 'com.github.ben-manes.versions' version '0.39.0'
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy:3.0.9'
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
