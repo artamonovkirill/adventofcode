@@ -32,6 +32,6 @@ class Dive {
         def input = new File('src/main/resources/dive.txt')
         def commands = input.readLines()
         def result = execute(commands)
-        System.out.println(result.x * result.depth)
+        println(result.x * result.depth)
     }
 }
