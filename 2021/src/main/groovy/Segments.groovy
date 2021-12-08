@@ -2,11 +2,13 @@ class Segments {
     static List<Integer> decode(List<String> displays) {
         displays.collect { display ->
             def io = display.split('[|]').collect { it.trim().split(' ') }
-            def output = io[1]
-            def all = io[0] + output
-            def one = all.find { it.size() == 2 }
-            def four = all.find { it.size() == 4 }
+
+            def signals = io[0]
+            def one = signals.find { it.size() == 2 }
+            def four = signals.find { it.size() == 4 }
             if (!one || !four) throw new RuntimeException("Need one and four to decode")
+
+            def output = io[1]
             output.collect { digit -> parse(digit, one, four) }.join('') as int
         }
     }
