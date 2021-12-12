@@ -23,19 +23,16 @@ class Passage {
     }
 
     Set<String> paths() {
-        extendAll([['start']].toSet()).findAll { it.last() == 'end' }*.join(',')
+        def start = [['start']].toSet()
+        extendAll(start).findAll { it.last() == 'end' }*.join(',')
     }
 
     Set<List<String>> extendAll(Set<List<String>> paths) {
-        def groups = paths.collect {
-            extendOne(it)
-        }.findAll {
-            it
-        }.collectMany {
-            it
-        }.groupBy {
-            it.last() == 'end'
-        }
+        def groups = paths
+                .collect { extendOne(it) }
+                .findAll { it }
+                .collectMany { it }
+                .groupBy { it.last() == 'end' }
 
         def finalists = groups.get(true, []).toSet()
         def candidates = groups.get(false, []).toSet()
