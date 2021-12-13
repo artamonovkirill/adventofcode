@@ -9,7 +9,7 @@ class Fold {
 @MapConstructor
 class Origami {
     List<List<Boolean>> page
-    List<Fold> folds
+    List<Fold> folds = []
 
     Origami(File input) {
         def lines = input.readLines()
@@ -17,7 +17,7 @@ class Origami {
         def width = coordinates.max { it[0] }[0]
         def height = coordinates.max { it[1] }[1]
         println("Page width $width, height $height")
-        this.folds = lines.findAll {
+        folds = lines.findAll {
             it.startsWith('fold along')
         }.collect {
             def fold = it.replace('fold along ', '').split('=')
@@ -47,7 +47,7 @@ class Origami {
                 foldHorizontally(page.transpose(), fold).transpose()
             }
         }
-        new Origami(page: page, folds: folds)
+        new Origami(page: page)
     }
 
     static def foldHorizontally(List<List<String>> page, Fold fold) {
