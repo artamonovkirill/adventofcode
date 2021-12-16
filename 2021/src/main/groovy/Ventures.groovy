@@ -1,3 +1,4 @@
+import commons.Point
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -37,11 +38,4 @@ class Line {
             [(start.x..end.x), (start.y..end.y)].transpose().collect { x, y -> new Point(x: x, y: y) }
         }
     }
-}
-
-@ToString
-@EqualsAndHashCode
-class Point {
-    int x
-    int y
 }

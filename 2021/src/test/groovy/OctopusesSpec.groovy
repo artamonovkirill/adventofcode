@@ -13,7 +13,7 @@ class OctopusesSpec extends Specification {
         def flashes = solution.advance(steps)
 
         then:
-        solution.matrix == expected.matrix
+        solution.octopuses == expected.octopuses
         flashes == expectedFlashes
 
         where:
@@ -34,7 +34,7 @@ class OctopusesSpec extends Specification {
         def flashes = solution.advance(steps)
 
         then:
-        solution.matrix == expected.matrix
+        solution.octopuses == expected.octopuses
         flashes == expectedFlashes
 
         where:

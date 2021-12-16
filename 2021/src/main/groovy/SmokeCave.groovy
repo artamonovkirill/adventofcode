@@ -1,14 +1,13 @@
+import commons.Matrix
 import groovy.transform.Memoized
 
-class SmokeCave {
-    final List<List<Integer>> matrix
-
+class SmokeCave extends Matrix {
     SmokeCave(List<String> rows) {
-        matrix = rows.collect { row -> row.collect { it as int } }
+        super(rows.collect { row -> row.collect { it as int } })
     }
 
     int risk() {
-        lowPoints().sum { height, x, y -> height + 1 }
+        lowPoints().sum { height, x, y -> height + 1 } as int
     }
 
     @Memoized
@@ -21,12 +20,8 @@ class SmokeCave {
     }
 
     List<List<Integer>> neighbours(int i, int j) {
-        [[0, -1], [-1, 0], [1, 0], [0, 1]].collect {
-            x, y -> [x + i, y + j]
-        }.findAll {
-            x, y -> i >= 0 && y >= 0 && x < matrix[j].size() && y < matrix.size()
-        }.collect {
-            x, y -> [matrix[y][x], x, y]
+        super.neighbours(i, j).collect {
+            [value(it), it.x, it.y]
         }
     }
 

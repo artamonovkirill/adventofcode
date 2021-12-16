@@ -21,7 +21,7 @@ class ChitonSpec extends Specification {
         def extended = solution.extend()
 
         then:
-        extended.cave == new Chiton(oracle).cave
+        extended.matrix == new Chiton(oracle).matrix
         extended.best() == 315
     }
 

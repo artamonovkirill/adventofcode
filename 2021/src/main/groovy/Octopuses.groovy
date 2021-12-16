@@ -1,3 +1,4 @@
+import commons.Matrix
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -9,19 +10,20 @@ class Octopus {
     int y
 }
 
-class Octopuses {
-    List<List<Octopus>> matrix
+class Octopuses extends Matrix {
+    List<List<Octopus>> octopuses
     int flashes = 0
     int size
 
     Octopuses(File input) {
-        matrix = input.readLines().indexed().collect {
-            j, line ->
-                line.toList().indexed().collect {
+        super(input)
+        octopuses = matrix.indexed().collect {
+            j, row ->
+                row.indexed().collect {
                     i, e -> new Octopus(energy: e as int, x: i, y: j)
                 }
         }
-        size = matrix.sum { row -> row.size() }
+        size = octopuses.sum { row -> row.size() }
     }
 
 
@@ -33,7 +35,7 @@ class Octopuses {
 
     int advance(int steps) {
         if (steps == 0) return this.flashes
-        matrix = matrix.each { row ->
+        octopuses = octopuses.each { row ->
             row.each {
                 o -> o.energy++
             }
@@ -47,7 +49,7 @@ class Octopuses {
     }
 
     List<Octopus> flash(List<Octopus> alreadyFlashed) {
-        List<Octopus> readyToFlash = matrix.collectMany {
+        List<Octopus> readyToFlash = octopuses.collectMany {
             row -> row.findAll { it.energy > 9 }
         }.findAll {
             !alreadyFlashed.contains(it)
@@ -65,17 +67,13 @@ class Octopuses {
     }
 
     List<Octopus> neighbours(Octopus o) {
-        [[0, -1], [-1, -1], [-1, 0], [-1, 1], [1, 0], [1, 1], [0, 1], [1, -1]].collect {
-            x, y -> [x + o.x, y + o.y]
-        }.findAll {
-            x, y -> x >= 0 && y >= 0 && x < matrix[o.y].size() && y < matrix.size()
-        }.collect {
-            x, y -> matrix[y][x]
+        neighbours(o.x, o.y, true).collect {
+            p -> octopuses[p.y][p.x]
         }
     }
 
     int all(int steps = 1) {
-        matrix.each { row ->
+        octopuses.each { row ->
             row.each {
                 o -> o.energy++
             }
