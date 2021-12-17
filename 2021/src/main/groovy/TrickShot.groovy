@@ -1,9 +1,9 @@
 import commons.Point
 import groovy.transform.Memoized
 
-import java.util.stream.Stream
-
 import static java.util.stream.Collectors.toList
+import static java.util.stream.Stream.concat
+import static java.util.stream.Stream.generate
 
 class Target {
     int top
@@ -14,7 +14,7 @@ class Target {
 
 class TrickShot {
     static List<List<Point>> all(Target target) {
-        xs(target.left, target.right).collectMany {
+        xs(target).collectMany {
             x -> ys(x, target)
         }
     }
@@ -26,15 +26,14 @@ class TrickShot {
         }.max()
     }
 
-    static List<List<Integer>> xs(int min, int max) {
-        (1..max).collect { start ->
-            Stream.iterate(start, x -> Math.max(x - 1, 0))
-                    .limit(max * 5)
-                    .collect(toList())
-        }.collect {
-            speeds -> accumulate(speeds)
+    static List<List<Integer>> xs(Target target) {
+        def min = (1..target.left).find {
+            (1..it).sum() >= target.left
+        }
+        (min..target.right).collect { start ->
+            accumulate(start..0)
         }.findAll {
-            path -> path.any { x -> x >= min && x <= max }
+            path -> path.any { x -> x >= target.left && x <= target.right }
         }
     }
 
@@ -46,11 +45,11 @@ class TrickShot {
 
     static List<List<Point>> ys(List<Integer> xs, Target target) {
         (target.bottom..target.right).collect { start ->
-            def speeds = Stream.iterate(start, e -> e - 1)
-                    .takeWhile(e -> e >= target.bottom)
+            def ys = accumulate(start..target.bottom)
+            def extendedXs = concat(xs.stream(), generate(() -> xs.last()))
+                    .limit(ys.size())
                     .collect(toList())
-            def ys = accumulate(speeds)
-            [xs, ys].transpose()
+            [extendedXs, ys].transpose()
         }.findAll { path ->
             path.any { x, y -> x >= target.left && x <= target.right && y >= target.bottom && y <= target.top }
         }.collect {
