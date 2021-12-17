@@ -1,6 +1,8 @@
 import commons.Point
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.Memoized
 
+import static java.time.LocalTime.now
 import static java.util.stream.Collectors.toList
 import static java.util.stream.Stream.concat
 import static java.util.stream.Stream.generate
@@ -13,30 +15,32 @@ class Target {
 }
 
 class TrickShot {
+    @Memoized
     static List<List<Point>> all(Target target) {
         xs(target).collectMany {
             x -> ys(x, target)
         }
     }
 
-    @Memoized
     static int best(Target target) {
         all(target).collect {
             path -> path.collect { it.y }.max()
         }.max()
     }
 
+    @Memoized
     static List<List<Integer>> xs(Target target) {
         def min = (1..target.left).find {
             (1..it).sum() >= target.left
         }
-        (min..target.right).collect { start ->
-            accumulate(start..0)
+        (min..target.right).collect {
+            accumulate(it..0)
         }.findAll {
             path -> path.any { x -> x >= target.left && x <= target.right }
         }
     }
 
+    @Memoized
     static List<Integer> accumulate(List<Integer> xs) {
         xs.tail().inject([xs.head()]) { acc, e ->
             acc + [acc.last() + e]
