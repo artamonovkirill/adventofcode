@@ -1,8 +1,6 @@
-import commons.Point
-import groovy.transform.EqualsAndHashCode
+import commons.xy.Point
 import groovy.transform.Memoized
 
-import static java.time.LocalTime.now
 import static java.util.stream.Collectors.toList
 import static java.util.stream.Stream.concat
 import static java.util.stream.Stream.generate

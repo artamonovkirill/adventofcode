@@ -1,4 +1,4 @@
-package commons
+package commons.xy
 
 class Matrix {
     List<List<Integer>> matrix

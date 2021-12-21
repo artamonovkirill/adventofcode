@@ -1,4 +1,4 @@
-package commons
+package commons.xyz
 
 import groovy.transform.EqualsAndHashCode
 
@@ -6,9 +6,10 @@ import groovy.transform.EqualsAndHashCode
 class Point {
     int x
     int y
+    int z
 
     @Override
     String toString() {
-        "[$x, $y]"
+        "[x: $x, y: $y, z: $z]"
     }
 }

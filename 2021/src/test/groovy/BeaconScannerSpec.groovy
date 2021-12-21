@@ -1,4 +1,4 @@
-import commons.d3.Point
+import commons.xyz.Point
 import spock.lang.Specification
 
 class BeaconScannerSpec extends Specification {

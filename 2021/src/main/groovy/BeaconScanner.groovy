@@ -1,4 +1,4 @@
-import commons.d3.Point
+import commons.xyz.Point
 
 class BeaconScanner {
     static List<Point> rotateByX(Point p) {

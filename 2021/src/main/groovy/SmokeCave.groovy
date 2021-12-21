@@ -1,4 +1,4 @@
-import commons.Matrix
+import commons.xy.Matrix
 import groovy.transform.Memoized
 
 class SmokeCave extends Matrix {

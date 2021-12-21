@@ -1,4 +1,4 @@
-import commons.Point
+import commons.xy.Point
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 

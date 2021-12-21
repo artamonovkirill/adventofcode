@@ -1,6 +1,6 @@
 import groovy.transform.EqualsAndHashCode
-import commons.Matrix
-import commons.Point
+import commons.xy.Matrix
+import commons.xy.Point
 
 @EqualsAndHashCode
 class Path {
