@@ -32,16 +32,14 @@ class DiracDice {
         Map<Universe, Long> newUniverses = [:]
         universes.each { universe, count ->
             splits().each { dice ->
-                def newPosition = universe.firstPosition + dice
-                if (newPosition > 10) newPosition -= 10
-                def newScore = universe.firstScore + newPosition
-                if (newScore >= 21) {
+                def (int score, int position) = roll(universe.firstScore, universe.firstPosition, dice)
+                if (score >= 21) {
                     firstWins += count
                 } else {
                     def newUniverse = new Universe(
-                            firstPosition: newPosition,
+                            firstPosition: position,
                             secondPosition: universe.secondPosition,
-                            firstScore: newScore,
+                            firstScore: score,
                             secondScore: universe.secondScore)
                     newUniverses[newUniverse] = newUniverses.getOrDefault(newUniverse, 0L) + count
                 }
@@ -57,17 +55,15 @@ class DiracDice {
         newUniverses = [:]
         universes.each { universe, count ->
             splits().each { dice ->
-                def newPosition = universe.secondPosition + dice
-                if (newPosition > 10) newPosition -= 10
-                def newScore = universe.secondScore + newPosition
-                if (newScore >= 21) {
+                def (int score, int position) = roll(universe.secondPosition, universe.secondScore, dice)
+                if (score >= 21) {
                     secondWins += count
                 } else {
                     def newUniverse = new Universe(
                             firstPosition: universe.firstPosition,
-                            secondPosition: newPosition,
+                            secondPosition: position,
                             firstScore: universe.firstScore,
-                            secondScore: newScore)
+                            secondScore: score)
                     newUniverses[newUniverse] = newUniverses.getOrDefault(newUniverse, 0L) + count
                 }
             }
@@ -77,7 +73,15 @@ class DiracDice {
     }
 
     @Memoized
-    static List<Integer> splits() {
+    static List<Integer> roll(int position, int score, int dice) {
+        def newPosition = position + dice
+        if (newPosition > 10) newPosition -= 10
+        def newScore = score + newPosition
+        [newScore, newPosition]
+    }
+
+    @Memoized
+    static List<Byte> splits() {
         [1, 2, 3].collectMany {
             i ->
                 [1, 2, 3].collectMany {
