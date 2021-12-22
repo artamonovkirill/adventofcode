@@ -60,14 +60,12 @@ class Cuboid {
     }
 
     static Optional<Cuboid> intersect(Cuboid a, Cuboid b) {
-        Line.intersect(a.x, b.x).flatMap {
-            x ->
-                Line.intersect(a.y, b.y).flatMap {
-                    y ->
-                        Line.intersect(a.z, b.z).map {
-                            z -> new Cuboid(x: x, y: y, z: z)
-                        }
+        Line.intersect(a.x, b.x).flatMap { x ->
+            Line.intersect(a.y, b.y).flatMap { y ->
+                Line.intersect(a.z, b.z).map { z ->
+                    new Cuboid(x: x, y: y, z: z)
                 }
+            }
         }
     }
 
