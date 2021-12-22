@@ -10,6 +10,6 @@ class Point {
 
     @Override
     String toString() {
-        "[x: $x, y: $y, z: $z]"
+        "[$x,$y,$z]"
     }
 }
