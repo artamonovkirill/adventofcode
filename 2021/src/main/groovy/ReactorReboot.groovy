@@ -103,18 +103,13 @@ class ReactorReboot {
             def (action, lines) = command.split(' ')
             parse(lines, init).map { cuboid ->
                 println("turning $action $cuboid")
-                def result = action == 'on' ? [cuboid] : []
-                result + cut(cuboids, cuboid)
+                (action == 'on' ? [cuboid] : []) + cuboids.collectMany { c ->
+                    Cuboid.intersect(c, cuboid).map { intersection ->
+                        c.cut(intersection)
+                    }.orElse([c])
+                }
             }.orElse(cuboids)
         }.sum { it.size() }
-    }
-
-    static List<Cuboid> cut(List<Cuboid> cuboids, Cuboid cuboid) {
-        cuboids.collectMany { c ->
-            Cuboid.intersect(c, cuboid).map { intersection ->
-                c.cut(intersection)
-            }.orElse([c])
-        }
     }
 
     static Optional<Cuboid> parse(String line, boolean init = true) {
