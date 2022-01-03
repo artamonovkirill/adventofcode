@@ -3,11 +3,10 @@ package util
 import (
 	"bufio"
 	"os"
-	"strconv"
 )
 
 // Lines reads file line by line
-func Lines(file string) []int {
+func Lines(file string) []string {
 	f, err := os.Open(file)
 	defer func(f *os.File) {
 		err := f.Close()
@@ -20,13 +19,10 @@ func Lines(file string) []int {
 	}
 
 	scanner := bufio.NewScanner(f)
-	var result []int
+	var result []string
 	for scanner.Scan() {
-		i, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			panic(err)
-		}
-		result = append(result, i)
+		line := scanner.Text()
+		result = append(result, line)
 	}
 
 	if err := scanner.Err(); err != nil {

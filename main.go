@@ -1,7 +1,9 @@
 package main
 
-import "github.com/advendofcode/2020/report"
+import (
+	"github.com/advendofcode/2020/password"
+)
 
 func main() {
-	report.Solve()
+	password.Solve()
 }
