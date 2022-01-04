@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/passport"
+	"github.com/advendofcode/2020/boarding"
 )
 
 func main() {
-	passport.Solve()
+	boarding.Solve()
 }

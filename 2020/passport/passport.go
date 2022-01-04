@@ -83,8 +83,3 @@ func split(input string, re string) []string {
 	}
 	return result
 }
-
-func Solve() {
-	input := "2020/passport/puzzle.txt"
-	fmt.Println(solve(input))
-}
