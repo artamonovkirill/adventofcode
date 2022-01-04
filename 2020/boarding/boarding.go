@@ -40,14 +40,19 @@ func choose(input string, low int, high int, down uint8) int {
 
 func Solve() {
 	input := "2020/boarding/puzzle.txt"
-	lines := util.Lines(input)
+	passes := util.Lines(input)
+	plane(passes)
+	fmt.Println(82*8 + 3)
+}
+
+func plane(passes []string) {
 	plane := make(map[int]map[int]string, 128)
-	for _, line := range lines {
-		pass := parse(line)
-		if plane[pass.Row] == nil {
-			plane[pass.Row] = make(map[int]string, 8)
+	for _, pass := range passes {
+		p := parse(pass)
+		if plane[p.Row] == nil {
+			plane[p.Row] = make(map[int]string, 8)
 		}
-		plane[pass.Row][pass.Column] = "X"
+		plane[p.Row][p.Column] = "X"
 	}
 
 	for i := 0; i < 128; i++ {
@@ -61,5 +66,4 @@ func Solve() {
 		}
 		fmt.Println()
 	}
-	fmt.Println(82*8 + 3)
 }
