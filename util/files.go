@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"io/ioutil"
 	"os"
 )
 
@@ -30,4 +31,12 @@ func Lines(file string) []string {
 	}
 
 	return result
+}
+
+func Text(file string) string {
+	content, err := ioutil.ReadFile(file)
+	if err != nil {
+		panic(err)
+	}
+	return string(content)
 }

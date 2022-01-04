@@ -1,8 +1,6 @@
 package password
 
 import (
-	"fmt"
-	"github.com/advendofcode/util"
 	"regexp"
 	"strconv"
 )
@@ -32,9 +30,4 @@ func atoi(input string) int {
 func split(input string, re string) (string, string) {
 	parts := regexp.MustCompile(re).Split(input, -1)
 	return parts[0], parts[1]
-}
-
-func Solve() {
-	input := util.Lines("2020/password/password.txt")
-	fmt.Println(valid(input))
 }
