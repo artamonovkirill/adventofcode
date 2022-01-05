@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/encoding"
+	"github.com/advendofcode/2020/adapter"
 )
 
 func main() {
-	encoding.Solve()
+	adapter.Solve()
 }

@@ -1,15 +1,12 @@
 package encoding
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 	"sort"
-	"strconv"
 )
 
 func check(file string, preamble int) int {
-	lines := util.Lines(file)
-	ns := parse(lines)
+	ns := util.Numbers(file)
 OUTER:
 	for i, n := range ns {
 		if i < preamble {
@@ -40,21 +37,8 @@ func combinations(min int, max int) []Pair {
 	return result
 }
 
-func parse(lines []string) []int {
-	ns := make([]int, len(lines))
-	for i, line := range lines {
-		v, err := strconv.Atoi(line)
-		if err != nil {
-			panic(err)
-		}
-		ns[i] = v
-	}
-	return ns
-}
-
 func find(file string, target int) int {
-	lines := util.Lines(file)
-	ns := parse(lines)
+	ns := util.Numbers(file)
 	for i, n := range ns {
 		cs := []int{n}
 		sum := n
@@ -72,11 +56,4 @@ func find(file string, target int) int {
 	}
 
 	return 0
-}
-
-func Solve() {
-	input := "2020/encoding/puzzle.txt"
-	invalid := check(input, 25)
-	fmt.Println(invalid)
-	fmt.Println(find(input, invalid))
 }
