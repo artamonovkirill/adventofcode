@@ -1,7 +1,6 @@
 package halting
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 	"strconv"
 )
@@ -69,9 +68,4 @@ func adjust(argument string) func(int) int {
 			return i - value
 		}
 	}
-}
-
-func Solve() {
-	input := "2020/halting/puzzle.txt"
-	fmt.Println(solve(input))
 }

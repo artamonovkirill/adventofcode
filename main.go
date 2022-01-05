@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/halting"
+	"github.com/advendofcode/2020/encoding"
 )
 
 func main() {
-	halting.Solve()
+	encoding.Solve()
 }
