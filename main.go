@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/haversacks"
+	"github.com/advendofcode/2020/halting"
 )
 
 func main() {
-	haversacks.Solve()
+	halting.Solve()
 }

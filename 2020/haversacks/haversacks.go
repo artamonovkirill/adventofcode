@@ -1,7 +1,6 @@
 package haversacks
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 	"regexp"
 	"strconv"
@@ -50,9 +49,4 @@ func count(bags map[string]map[string]int, counts map[string]int) int {
 		result += c * count(bags, bags[color])
 	}
 	return result
-}
-
-func Solve() {
-	input := "2020/haversacks/puzzle.txt"
-	fmt.Println(solve(input))
 }
