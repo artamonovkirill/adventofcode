@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/customs"
+	"github.com/advendofcode/2020/haversacks"
 )
 
 func main() {
-	customs.Solve()
+	haversacks.Solve()
 }

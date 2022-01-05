@@ -1,16 +1,16 @@
 package password
 
 import (
-	"regexp"
+	"github.com/advendofcode/util"
 	"strconv"
 )
 
 func valid(input []string) int {
 	result := 0
 	for _, line := range input {
-		rule, password := split(line, ": ")
-		rng, char := split(rule, " ")
-		fst, snd := split(rng, "-")
+		rule, password := util.Split(line, ": ")
+		rng, char := util.Split(rule, " ")
+		fst, snd := util.Split(rng, "-")
 
 		if (password[atoi(fst)-1] == char[0]) != (password[atoi(snd)-1] == char[0]) {
 			result++
@@ -25,9 +25,4 @@ func atoi(input string) int {
 		panic(err)
 	}
 	return i
-}
-
-func split(input string, re string) (string, string) {
-	parts := regexp.MustCompile(re).Split(input, -1)
-	return parts[0], parts[1]
 }

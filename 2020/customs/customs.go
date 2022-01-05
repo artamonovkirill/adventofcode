@@ -1,8 +1,6 @@
 package customs
 
 import (
-	"fmt"
-	"github.com/advendofcode/util"
 	"strings"
 )
 
@@ -30,10 +28,4 @@ func many(input string) int {
 		result += one(group)
 	}
 	return result
-}
-
-func Solve() {
-	input := "2020/customs/puzzle.txt"
-	groups := util.Text(input)
-	fmt.Println(many(groups))
 }
