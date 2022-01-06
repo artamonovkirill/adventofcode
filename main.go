@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/seating"
+	"github.com/advendofcode/2020/rain"
 )
 
 func main() {
-	seating.Solve()
+	rain.Solve()
 }

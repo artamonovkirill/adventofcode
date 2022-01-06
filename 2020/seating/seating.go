@@ -1,7 +1,6 @@
 package seating
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 	"strings"
 )
@@ -109,9 +108,4 @@ func solve(file string) int {
 		}
 		old = new
 	}
-}
-
-func Solve() {
-	input := "2020/seating/puzzle.txt"
-	fmt.Println(solve(input))
 }
