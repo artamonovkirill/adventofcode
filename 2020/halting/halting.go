@@ -2,7 +2,6 @@ package halting
 
 import (
 	"github.com/advendofcode/util"
-	"strconv"
 )
 
 func solve(file string) int {
@@ -54,10 +53,7 @@ func process(commands []string, i int, acc int) (int, int) {
 }
 
 func adjust(argument string) func(int) int {
-	value, err := strconv.Atoi(argument[1:])
-	if err != nil {
-		panic(err)
-	}
+	value := util.Number(argument[1:])
 	sign := argument[0]
 	if sign == '+' {
 		return func(i int) int {

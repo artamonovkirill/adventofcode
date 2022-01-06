@@ -1,7 +1,6 @@
 package rain
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 	"math"
 	"strconv"
@@ -32,10 +31,7 @@ func distance(s Ship) int {
 
 func process(s Ship, command string) Ship {
 	action := command[0]
-	value, err := strconv.Atoi(command[1:])
-	if err != nil {
-		panic(err)
-	}
+	value := util.Number(command[1:])
 	switch action {
 	case 'F':
 		return forward(s, value)
@@ -81,9 +77,4 @@ func forward(s Ship, distance int) Ship {
 		e: s.e + distance*s.w.e,
 		w: s.w,
 	}
-}
-
-func Solve() {
-	lines := util.Lines("2020/rain/puzzle.txt")
-	fmt.Println(solve(lines))
 }

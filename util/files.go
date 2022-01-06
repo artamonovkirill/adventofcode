@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"io/ioutil"
 	"os"
-	"strconv"
 )
 
 // Lines reads file line by line
@@ -38,11 +37,7 @@ func Numbers(file string) []int {
 	lines := Lines(file)
 	result := make([]int, len(lines))
 	for i, l := range lines {
-		n, err := strconv.Atoi(l)
-		if err != nil {
-			panic(err)
-		}
-		result[i] = n
+		result[i] = Number(l)
 	}
 	return result
 }

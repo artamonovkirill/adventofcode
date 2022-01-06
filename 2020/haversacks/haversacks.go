@@ -3,7 +3,6 @@ package haversacks
 import (
 	"github.com/advendofcode/util"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -27,14 +26,10 @@ func parse(lines []string) map[string]map[string]int {
 		counts := make(map[string]int, len(contents))
 		for _, content := range contents {
 			if content[0:2] != "no" {
-				countString, color := util.Split(content, " ")
+				count, color := util.Split(content, " ")
 				color = regexp.MustCompile("[0-9]+ ").ReplaceAllString(color, "")
 				color = regexp.MustCompile(" bags?[.]?").ReplaceAllString(color, "")
-				count, err := strconv.Atoi(countString)
-				if err != nil {
-					panic(err)
-				}
-				counts[color] = count
+				counts[color] = util.Number(count)
 			}
 		}
 		bags[container] = counts
