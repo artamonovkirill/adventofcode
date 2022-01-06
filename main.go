@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/adapter"
+	"github.com/advendofcode/2020/seating"
 )
 
 func main() {
-	adapter.Solve()
+	seating.Solve()
 }

@@ -1,7 +1,6 @@
 package adapter
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 	"sort"
 )
@@ -31,9 +30,4 @@ func solve(file string) int {
 		}
 	}
 	return paths[0]
-}
-
-func Solve() {
-	input := "2020/adapter/puzzle.txt"
-	fmt.Println(solve(input))
 }
