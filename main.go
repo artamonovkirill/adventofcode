@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/shuttle"
+	"github.com/advendofcode/2020/recitation"
 )
 
 func main() {
-	shuttle.Solve()
+	recitation.Solve()
 }
