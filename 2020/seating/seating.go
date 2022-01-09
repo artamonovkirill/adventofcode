@@ -21,15 +21,15 @@ func advance(old [][]string, steps int) [][]string {
 	if steps == 0 {
 		return old
 	}
-	new := make([][]string, len(old))
+	updated := make([][]string, len(old))
 	for i, row := range old {
-		new[i] = make([]string, len(row))
+		updated[i] = make([]string, len(row))
 		for j, e := range row {
 			ns := neighbours(old, i, j)
-			new[i][j] = update(e, ns)
+			updated[i][j] = update(e, ns)
 		}
 	}
-	return advance(new, steps-1)
+	return advance(updated, steps-1)
 }
 
 func update(seat string, neighbours map[string]int) string {
@@ -94,8 +94,8 @@ func toString(state [][]string) string {
 func solve(file string) int {
 	old := parse(file)
 	for {
-		new := advance(old, 1)
-		if toString(old) == toString(new) {
+		updated := advance(old, 1)
+		if toString(old) == toString(updated) {
 			result := 0
 			for _, row := range old {
 				for _, e := range row {
@@ -106,6 +106,6 @@ func solve(file string) int {
 			}
 			return result
 		}
-		old = new
+		old = updated
 	}
 }

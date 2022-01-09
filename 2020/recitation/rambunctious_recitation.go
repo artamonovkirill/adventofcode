@@ -1,7 +1,5 @@
 package recitation
 
-import "fmt"
-
 func solve(start []int) int {
 	used := map[int][]int{}
 	for i, s := range start {
@@ -25,8 +23,4 @@ func solve(start []int) int {
 
 func last(xs []int) int {
 	return xs[len(xs)-1]
-}
-
-func Solve() {
-	fmt.Println(solve([]int{0, 1, 5, 10, 3, 12, 19}))
 }

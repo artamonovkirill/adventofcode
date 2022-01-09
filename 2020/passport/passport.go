@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/advendofcode/util"
-	mapset "github.com/deckarep/golang-set"
+	set "github.com/deckarep/golang-set"
 	"regexp"
 	"sort"
 	"strings"
@@ -35,7 +35,7 @@ func solve(file string) int {
 }
 
 func unique(entries []string, field string) {
-	result := mapset.NewSet()
+	result := set.NewSet()
 	for _, entry := range entries {
 		match, err := find(entry, field+":[^\n ]+")
 		if valid(entry) {
