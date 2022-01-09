@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/ticket"
+	"github.com/advendofcode/2020/conway"
 )
 
 func main() {
-	ticket.Solve()
+	conway.Solve()
 }
