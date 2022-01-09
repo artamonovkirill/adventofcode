@@ -1,7 +1,6 @@
 package conway
 
 import (
-	"fmt"
 	"github.com/advendofcode/util"
 )
 
@@ -135,9 +134,4 @@ func do(t Tesseract, f func(Point, bool)) {
 			}
 		}
 	}
-}
-
-func Solve() {
-	input := parse("2020/conway/puzzle.txt")
-	fmt.Println(lit(advance(input, 6)))
 }
