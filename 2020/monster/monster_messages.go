@@ -81,8 +81,3 @@ func parse(id int, rules map[int]string, regexes map[int]string) string {
 	}
 	panic("not implemented")
 }
-
-func Solve() {
-	input := "2020/monster/puzzle.txt"
-	fmt.Println(solve(input))
-}
