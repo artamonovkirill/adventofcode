@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/jigsaw"
+	"github.com/advendofcode/2020/allergen"
 )
 
 func main() {
-	jigsaw.Solve()
+	allergen.Solve()
 }
