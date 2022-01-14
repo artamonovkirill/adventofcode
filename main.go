@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/allergen"
+	"github.com/advendofcode/2020/crab"
 )
 
 func main() {
-	allergen.Solve()
+	crab.Solve()
 }
