@@ -13,7 +13,7 @@ func TestSampleInput(t *testing.T) {
 		"2-9 c: ccccccccc",
 	}
 
-	//when:
+	// when:
 	result := valid(input)
 
 	// then:
@@ -26,7 +26,7 @@ func TestPartialInput(t *testing.T) {
 		"2-7 p: pbhhzpmppb",
 	}
 
-	//when:
+	// when:
 	result := valid(input)
 
 	// then:

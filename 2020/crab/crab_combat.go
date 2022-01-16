@@ -3,16 +3,11 @@ package crab
 import (
 	"fmt"
 	"github.com/advendofcode/util"
-	"strconv"
 	"strings"
 )
 
 func toString(cards []int) string {
-	values := make([]string, len(cards))
-	for i, c := range cards {
-		values[i] = strconv.Itoa(c)
-	}
-	return strings.Join(values, ", ")
+	return util.ToString(cards, ", ")
 }
 
 func solve(firstHand []int, secondHand []int) (int, int) {

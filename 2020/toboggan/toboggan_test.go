@@ -9,7 +9,7 @@ func TestSampleInput(t *testing.T) {
 	// given:
 	input := "example.txt"
 
-	//when:
+	// when:
 	result := solve(input)
 
 	// then:

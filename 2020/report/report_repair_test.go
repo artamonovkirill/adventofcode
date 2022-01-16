@@ -16,7 +16,7 @@ func TestSampleInput(t *testing.T) {
 		1456,
 	}
 
-	//when:
+	// when:
 	result := solve(report)
 
 	// then:
