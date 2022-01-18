@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/lobby"
+	"github.com/advendofcode/2020/combo"
 )
 
 func main() {
-	lobby.Solve()
+	combo.Solve()
 }
