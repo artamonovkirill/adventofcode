@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/cups"
+	"github.com/advendofcode/2020/lobby"
 )
 
 func main() {
-	cups.Solve()
+	lobby.Solve()
 }
