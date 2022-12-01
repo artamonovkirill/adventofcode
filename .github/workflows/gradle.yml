@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 2021/
-      - .github/workflows/gradle.yaml
+      - .github/workflows/gradle.yml
 
 jobs:
   build:
