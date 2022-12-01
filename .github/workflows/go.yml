@@ -1,7 +1,9 @@
 name: Go
 
 on:
-  - push
+  push:
+    path-ignore:
+      - 2021/
 
 jobs:
   build:

@@ -1,7 +1,9 @@
 name: Gradle
 
 on:
-  - push
+  push:
+    paths:
+      - 2021/
 
 jobs:
   build:
