@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2020/combo"
+	"github.com/advendofcode/2022/calories"
 )
 
 func main() {
-	combo.Solve()
+	calories.Solve()
 }

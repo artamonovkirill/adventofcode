@@ -2,7 +2,6 @@ package util
 
 import (
 	"bufio"
-	"io/ioutil"
 	"os"
 )
 
@@ -43,7 +42,7 @@ func Numbers(file string) []int {
 }
 
 func Text(file string) string {
-	content, err := ioutil.ReadFile(file)
+	content, err := os.ReadFile(file)
 	if err != nil {
 		panic(err)
 	}
