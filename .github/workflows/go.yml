@@ -4,6 +4,7 @@ on:
   push:
     path-ignore:
       - 2021/
+      - .github/workflows/gradle.yml
 
 jobs:
   build:
