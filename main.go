@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/calories"
+	"github.com/advendofcode/2022/cleanup"
 )
 
 func main() {
-	calories.Solve()
+	cleanup.Solve()
 }
