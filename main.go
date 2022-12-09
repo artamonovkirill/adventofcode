@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/cleanup"
+	"github.com/advendofcode/2022/stacks"
 )
 
 func main() {
-	cleanup.Solve()
+	stacks.Solve()
 }
