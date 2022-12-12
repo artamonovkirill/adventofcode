@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/stacks"
+	"github.com/advendofcode/2022/space"
 )
 
 func main() {
-	stacks.Solve()
+	space.Solve()
 }
