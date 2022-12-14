@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/rope"
+	"github.com/advendofcode/2022/tube"
 )
 
 func main() {
-	rope.Solve()
+	tube.Solve()
 }
