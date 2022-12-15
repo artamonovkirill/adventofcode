@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/hill"
+	"github.com/advendofcode/2022/distress"
 )
 
 func main() {
-	hill.Solve()
+	distress.Solve()
 }
