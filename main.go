@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/reservoir"
+	"github.com/advendofcode/2022/beacon"
 )
 
 func main() {
-	reservoir.Solve()
+	beacon.Solve()
 }
