@@ -47,7 +47,7 @@ func unique(entries []string, field string) {
 	}
 	var s []string
 	for _, r := range result.ToSlice() {
-		s = append(s, r.(string))
+		s = append(s, r)
 	}
 	sort.Strings(s)
 	fmt.Println(s)
