@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/advendofcode/2022/valves"
+	"github.com/advendofcode/2022/flow"
 )
 
 func main() {
-	valves.Solve()
+	flow.Solve()
 }
