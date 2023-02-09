@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation 'org.apache.groovy:groovy:4.0.8'
+    implementation 'org.apache.groovy:groovy:4.0.9'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
 
