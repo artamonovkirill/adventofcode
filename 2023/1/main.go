@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/advendofcode/util"
 	"regexp"
-	"strconv"
 )
 
 var r = regexp.MustCompile("[1-9]|one|two|three|four|five|six|seven|eight|nine")
@@ -51,10 +50,7 @@ func parse(input string) int {
 	case "nine":
 		return 9
 	default:
-		value, err := strconv.Atoi(input)
-		if err != nil {
-			panic(err)
-		}
+		value := util.Number(input)
 		return value
 	}
 }

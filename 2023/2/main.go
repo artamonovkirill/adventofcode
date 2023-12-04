@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/advendofcode/util"
-	"strconv"
 	"strings"
 )
 
@@ -17,20 +16,14 @@ line:
 	for _, line := range util.Lines(file) {
 		picks := strings.Split(line, ": ")
 		game := picks[0]
-		id, err := strconv.Atoi(strings.Split(game, " ")[1])
-		if err != nil {
-			panic(err)
-		}
+		id := util.Number(strings.Split(game, " ")[1])
 		ps := strings.Split(picks[1], "; ")
 		for _, p := range ps {
 			xs := strings.Split(p, ", ")
 			for _, x := range xs {
 				ys := strings.Split(x, " ")
 				color := ys[1]
-				n, err := strconv.Atoi(ys[0])
-				if err != nil {
-					panic(err)
-				}
+				n := util.Number(ys[0])
 				switch color {
 				case "red":
 					if g.red < n {
@@ -67,10 +60,7 @@ func Power(file string) int {
 			for _, x := range xs {
 				ys := strings.Split(x, " ")
 				color := ys[1]
-				n, err := strconv.Atoi(ys[0])
-				if err != nil {
-					panic(err)
-				}
+				n := util.Number(ys[0])
 				switch color {
 				case "red":
 					if red < n {

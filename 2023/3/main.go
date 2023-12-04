@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/advendofcode/util"
 	"regexp"
-	"strconv"
 )
 
 var r = regexp.MustCompile("[0-9]+")
@@ -17,10 +16,7 @@ func Parts(file string) int {
 		indexes := r.FindAllStringIndex(line, -1)
 	numbers:
 		for n, ixs := range indexes {
-			number, err := strconv.Atoi(numbers[n])
-			if err != nil {
-				panic(err)
-			}
+			number := util.Number(numbers[n])
 			for y := max(i-1, 0); y < min(i+2, len(lines)); y++ {
 				for x := max(ixs[0]-1, 0); x < min(ixs[1]+1, len(line)); x++ {
 					c := lines[y][x]
@@ -54,10 +50,7 @@ func Gears(file string) int {
 		numbers := r.FindAllString(line, -1)
 		indexes := r.FindAllStringIndex(line, -1)
 		for n, ixs := range indexes {
-			number, err := strconv.Atoi(numbers[n])
-			if err != nil {
-				panic(err)
-			}
+			number := util.Number(numbers[n])
 			for y := max(i-1, 0); y < min(i+2, len(lines)); y++ {
 				for x := max(ixs[0]-1, 0); x < min(ixs[1]+1, len(line)); x++ {
 					c := lines[y][x]
