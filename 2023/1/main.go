@@ -9,7 +9,7 @@ import (
 
 var r = regexp.MustCompile("[1-9]|one|two|three|four|five|six|seven|eight|nine")
 
-func CalibrationValue(file string) int {
+func Solve(file string) int {
 	result := 0
 	for _, line := range util.Lines(file) {
 		first := r.FindString(line)
@@ -60,5 +60,5 @@ func parse(input string) int {
 }
 
 func main() {
-	fmt.Println(CalibrationValue("2023/1/input.txt"))
+	fmt.Println(Solve("2023/1/input.txt"))
 }
