@@ -1,3 +1,6 @@
+//go:build long
+// +build long
+
 package valves
 
 import (
