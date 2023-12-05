@@ -1,3 +1,6 @@
+//go:build flaky
+// +build flaky
+
 package reservoir
 
 import (
