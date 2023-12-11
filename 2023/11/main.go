@@ -54,34 +54,6 @@ func Solve(file string, factor int) int {
 	return result
 }
 
-func expand(lines []string, factor int) []string {
-	var result []string
-
-	cs := columns(lines)
-	rs := rows(lines)
-
-	for y, line := range lines {
-		var newLine []int32
-		for i, c := range line {
-			if cs[i] {
-				for j := 0; j < factor-1; j++ {
-					newLine = append(newLine, c)
-				}
-			}
-			newLine = append(newLine, c)
-		}
-		str := string(newLine)
-		if rs[y] {
-			for j := 0; j < factor-1; j++ {
-				result = append(result, str)
-			}
-		}
-		result = append(result, str)
-	}
-
-	return result
-}
-
 func columns(lines []string) map[int]bool {
 	result := make(map[int]bool)
 outer:
