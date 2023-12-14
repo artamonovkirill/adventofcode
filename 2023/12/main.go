@@ -6,50 +6,42 @@ import (
 	"strings"
 )
 
-type candidate struct {
-	value  string
-	groups int
-}
-
 func Solve(file string, factor int) int {
 	result := 0
-	for i, line := range util.Lines(file) {
-		fmt.Println("processing", i)
+	for _, line := range util.Lines(file) {
 		result += Matches(line, factor)
 	}
 	return result
 }
 
-type hash struct {
-	groups, length int
-}
-
 func Matches(line string, factor int) int {
 	result := 0
 	parts := strings.Split(line, " ")
-	visual := regex(unfold(parts[0], "?", factor))
+	visual := unfold(parts[0], "?", factor)
 	groups := parse(unfold(parts[1], ",", factor))
 
-	current := []candidate{
-		{},
+	ms := make([]map[int]int, len(visual)+1)
+	for i := range ms {
+		ms[i] = make(map[int]int)
 	}
-	for len(current) > 0 {
-		var next []candidate
-		mc := make(map[hash]int)
-		for _, c := range current {
-			remainingGroups := len(groups) - c.groups
+	ms[0][0] = 1
+
+	for i := 0; i < len(visual); i++ {
+		current := ms[i]
+		for g, v := range current {
+			remainingGroups := len(groups) - g
 
 			var ns []string
 			if remainingGroups == 0 {
-				ns = []string{"x"}
+				ns = []string{"."}
 			} else {
-				switch visual[len(c.value)] {
-				case 'x':
-					ns = []string{"x"}
+				switch visual[i] {
+				case '.':
+					ns = []string{"."}
 				case '#':
 					ns = []string{"#"}
-				case '.':
-					ns = []string{"x", "#"}
+				case '?':
+					ns = []string{".", "#"}
 				default:
 					panic("unexpected first char")
 				}
@@ -60,41 +52,27 @@ func Matches(line string, factor int) int {
 				var nextGroups []int
 
 				if char == "#" && remainingGroups > 0 {
-					nextGroup := groups[c.groups]
-					nextGroups = groups[0 : c.groups+1]
+					nextGroup := groups[g]
+					nextGroups = groups[0 : g+1]
 					addition = strings.Repeat(char, nextGroup)
 					if remainingGroups > 1 {
-						addition += "x"
+						addition += "."
 					}
 				} else {
-					nextGroups = groups[0:c.groups]
+					nextGroups = groups[0:g]
 					addition = char
 				}
 
-				if len(addition)+len(c.value) == len(visual) {
-					if matches(addition, visual[len(c.value):]) && equal(nextGroups, groups) {
-						result++
-					}
-				} else {
-					value := c.value + addition
-					if len(value) < len(visual) {
-						nc := candidate{
-							value:  value,
-							groups: len(nextGroups),
-						}
-						if matches(nc.value, visual[0:len(nc.value)]) {
-							h := hash{nc.groups, len(nc.value)}
-							mc[h] = mc[h] + 1
-							next = append(next, nc)
-						}
-					}
+				value := i + len(addition)
+				if value <= len(visual) && matches(addition, visual[i:value]) && (value < len(visual) || equal(nextGroups, groups)) {
+					ms[value][len(nextGroups)] = ms[value][len(nextGroups)] + v
 				}
 			}
 		}
-		if len(next) > 100_000 {
-			fmt.Println("  ", len(next), "to go,", "unique", len(mc))
-		}
-		current = next
+	}
+
+	for _, v := range ms[len(visual)] {
+		result += v
 	}
 
 	return result
@@ -102,7 +80,7 @@ func Matches(line string, factor int) int {
 
 func matches(value string, regex string) bool {
 	for i := 0; i < len(value); i++ {
-		if regex[i] != '.' && value[i] != regex[i] {
+		if regex[i] != '?' && value[i] != regex[i] {
 			return false
 		}
 	}
@@ -127,14 +105,6 @@ func parse(input string) []int {
 		result = append(result, util.Number(n))
 	}
 	return result
-}
-
-func regex(input string) string {
-	return strings.ReplaceAll(
-		strings.ReplaceAll(
-			input,
-			".", "x"),
-		"?", ".")
 }
 
 func unfold(pattern, separator string, factor int) string {
