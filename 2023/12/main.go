@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/advendofcode/util"
-	"regexp"
 	"strings"
 )
 
@@ -34,16 +33,6 @@ func Matches(line string, factor int) int {
 	current := []candidate{
 		{},
 	}
-	var rvs []*regexp.Regexp
-	for i := 0; i < len(visual); i++ {
-		rvs = append(rvs, regexp.MustCompile(visual[0:i]))
-	}
-	rts := make(map[int]*regexp.Regexp)
-	for i := 0; i < len(visual); i++ {
-		v := visual[i:]
-		rts[len(v)] = regexp.MustCompile(v)
-	}
-
 	for len(current) > 0 {
 		var next []candidate
 		mc := make(map[hash]int)
@@ -52,8 +41,6 @@ func Matches(line string, factor int) int {
 
 			var ns []string
 			if remainingGroups == 0 {
-				ns = []string{"x"}
-			} else if len(c.value) > 0 && c.value[len(c.value)-1] == '#' {
 				ns = []string{"x"}
 			} else {
 				switch visual[len(c.value)] {
@@ -85,7 +72,7 @@ func Matches(line string, factor int) int {
 				}
 
 				if len(addition)+len(c.value) == len(visual) {
-					if rts[len(addition)].MatchString(addition) && equal(nextGroups, groups) {
+					if matches(addition, visual[len(c.value):]) && equal(nextGroups, groups) {
 						result++
 					}
 				} else {
@@ -95,7 +82,7 @@ func Matches(line string, factor int) int {
 							value:  value,
 							groups: len(nextGroups),
 						}
-						if rvs[len(nc.value)].MatchString(nc.value) {
+						if matches(nc.value, visual[0:len(nc.value)]) {
 							h := hash{nc.groups, len(nc.value)}
 							mc[h] = mc[h] + 1
 							next = append(next, nc)
@@ -111,6 +98,15 @@ func Matches(line string, factor int) int {
 	}
 
 	return result
+}
+
+func matches(value string, regex string) bool {
+	for i := 0; i < len(value); i++ {
+		if regex[i] != '.' && value[i] != regex[i] {
+			return false
+		}
+	}
+	return true
 }
 
 func equal(as []int, bs []int) bool {
