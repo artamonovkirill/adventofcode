@@ -97,22 +97,15 @@ func Solve(file string) int {
 		maxY = max(maxY, p.y)
 	}
 
-	m := make([][]string, maxY-minY+1)
-	for i := range m {
-		m[i] = make([]string, maxX-minX+1)
-	}
-	for k, v := range borderLine {
-		m[k.y-minY][k.x-minX] = v
-	}
-
 	result := len(borderLine)
 
-	for y, row := range m {
+	for y := 0; y <= maxY-minY; y++ {
 		in := false
 		up := false
 		down := false
-		for x, e := range row {
-			if borderLine[point{x + minX, y + minY}] != "" {
+		for x := 0; x <= maxX-minX; x++ {
+			e := borderLine[point{x + minX, y + minY}]
+			if e != "" {
 				if e == "F" || e == "7" || e == "|" {
 					down = !down
 				}
@@ -125,30 +118,12 @@ func Solve(file string) int {
 					down = false
 				}
 			} else if in {
-				m[y][x] = "x"
 				result++
 			}
 		}
 	}
-	fmt.Println(toString(m))
 
 	return result
-}
-
-func toString(m [][]string) any {
-	lines := make([]string, len(m))
-	for y, row := range m {
-		line := ""
-		for _, c := range row {
-			if c == "" {
-				line += "."
-			} else {
-				line += c
-			}
-		}
-		lines[y] = line
-	}
-	return strings.Join(lines, "\n")
 }
 
 func main() {
