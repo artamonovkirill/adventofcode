@@ -6,153 +6,173 @@ import (
 	"strings"
 )
 
-type part struct {
-	x, m, a, s int
+type interval struct {
+	left, right int
+}
+
+type group struct {
+	x, m, a, s interval
+	workflow   string
 }
 
 func Solve(file string) int {
 	input := strings.Split(util.Text(file), "\n\n")
 	workflows := parseWorkflows(input[0])
-	parts := parseParts(input[1])
 	result := 0
-part:
-	for _, p := range parts {
-		current := workflows["in"]
-	inf:
-		for {
-		fn:
-			for _, fn := range current {
-				out := fn(p)
-				switch out {
-				case "":
-					continue fn
+	current := []group{
+		{
+			x:        interval{1, 4000},
+			m:        interval{1, 4000},
+			a:        interval{1, 4000},
+			s:        interval{1, 4000},
+			workflow: "in",
+		},
+	}
+	var accepted []group
+	for {
+		var next []group
+		for _, g := range current {
+			for _, ng := range workflows[g.workflow](g) {
+				switch ng.workflow {
 				case "R":
-					continue part
 				case "A":
-					result += p.x + p.m + p.a + p.s
-					continue part
+					accepted = append(accepted, ng)
 				default:
-					current = workflows[out]
-					continue inf
+					next = append(next, ng)
 				}
 			}
 		}
-	}
-	return result
-}
-
-func parseParts(input string) []part {
-	lines := strings.Split(input, "\n")
-	result := make([]part, len(lines))
-	for i, line := range lines {
-		p := part{}
-		for _, values := range strings.Split(line[1:len(line)-1], ",") {
-			parts := strings.Split(values, "=")
-			switch parts[0] {
-			case "x":
-				p.x = util.Number(parts[1])
-			case "m":
-				p.m = util.Number(parts[1])
-			case "a":
-				p.a = util.Number(parts[1])
-			case "s":
-				p.s = util.Number(parts[1])
-			default:
-				panic("not implemented")
+		if len(next) == 0 {
+			for _, acc := range accepted {
+				result += length(acc.x) * length(acc.m) * length(acc.a) * length(acc.s)
 			}
+			return result
 		}
-		result[i] = p
+		current = next
 	}
-	return result
 }
 
-func parseWorkflows(input string) map[string][]func(part) string {
-	result := make(map[string][]func(part) string)
-	for _, line := range strings.Split(input, "\n") {
+func length(i interval) int {
+	return i.right - i.left + 1
+}
+
+func parseWorkflows(input string) map[string]func(group) []group {
+	result := make(map[string]func(group) []group)
+	lines := strings.Split(input, "\n")
+	for _, line := range lines {
 		chunks := strings.Split(line[0:len(line)-1], "{")
 		name := chunks[0]
-		fns := strings.Split(chunks[1], ",")
-		functions := make([]func(part) string, len(fns))
-		for i, fn := range fns {
-			parts := strings.Split(fn, ":")
-			if len(parts) == 1 {
-				functions[i] = func(p part) string {
-					return parts[0]
-				}
-			} else {
-				matcher := parts[0]
-				target := parts[1]
-				switch matcher[0:2] {
-				case "a<":
-					functions[i] = func(p part) string {
-						if p.a < util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+		matchers := chunks[1]
+		result[name] = func(input group) []group {
+			var gs []group
+			current := input
+			for _, matcher := range strings.Split(matchers, ",") {
+				parts := strings.Split(matcher, ":")
+				if len(parts) == 1 {
+					gs = append(gs, group{
+						x: current.x, m: current.m, a: current.a, s: current.s,
+						workflow: parts[0],
+					})
+				} else {
+					m := parts[0]
+					target := parts[1]
+					value := util.Number(m[2:])
+					switch m[0:2] {
+					case "a<":
+						if current.a.right >= value {
+							gs = append(gs, group{
+								x: current.x, m: current.m, a: interval{current.a.left, value - 1}, s: current.s,
+								workflow: target,
+							})
+							current = group{
+								x: current.x, m: current.m, a: interval{value, current.a.right}, s: current.s,
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "a>":
-					functions[i] = func(p part) string {
-						if p.a > util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "a>":
+						if current.a.left <= value {
+							gs = append(gs, group{
+								x: current.x, m: current.m, a: interval{value + 1, current.a.right}, s: current.s,
+								workflow: target,
+							})
+							current = group{
+								x: current.x, m: current.m, a: interval{current.a.left, value}, s: current.s,
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "m<":
-					functions[i] = func(p part) string {
-						if p.m < util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "m<":
+						if current.m.right >= value {
+							gs = append(gs, group{
+								x: current.x, m: interval{current.m.left, value - 1}, a: current.a, s: current.s,
+								workflow: target,
+							})
+							current = group{
+								x: current.x, m: interval{value, current.m.right}, a: current.a, s: current.s,
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "m>":
-					functions[i] = func(p part) string {
-						if p.m > util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "m>":
+						if current.m.left <= value {
+							gs = append(gs, group{
+								x: current.x, m: interval{value + 1, current.m.right}, a: current.a, s: current.s,
+								workflow: target,
+							})
+							current = group{
+								x: current.x, m: interval{current.m.left, value}, a: current.a, s: current.s,
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "s<":
-					functions[i] = func(p part) string {
-						if p.s < util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "s<":
+						if current.s.right >= value {
+							gs = append(gs, group{
+								x: current.x, m: current.m, a: current.a, s: interval{current.s.left, value - 1},
+								workflow: target,
+							})
+							current = group{
+								x: current.x, m: current.m, a: current.a, s: interval{value, current.s.right},
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "s>":
-					functions[i] = func(p part) string {
-						if p.s > util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "s>":
+						if current.s.left <= value {
+							gs = append(gs, group{
+								x: current.x, m: current.m, a: current.a, s: interval{value + 1, current.s.right},
+								workflow: target,
+							})
+							current = group{
+								x: current.x, m: current.m, a: current.a, s: interval{current.s.left, value},
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "x<":
-					functions[i] = func(p part) string {
-						if p.x < util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "x<":
+						if current.x.right >= value {
+							gs = append(gs, group{
+								x: interval{current.x.left, value - 1}, m: current.m, a: current.a, s: current.s,
+								workflow: target,
+							})
+							current = group{
+								x: interval{value, current.x.right}, m: current.m, a: current.a, s: current.s,
+								workflow: current.workflow,
+							}
 						}
-					}
-				case "x>":
-					functions[i] = func(p part) string {
-						if p.x > util.Number(matcher[2:]) {
-							return target
-						} else {
-							return ""
+					case "x>":
+						if current.x.left <= value {
+							gs = append(gs, group{
+								x: interval{value + 1, current.x.right}, m: current.m, a: current.a, s: current.s,
+								workflow: target,
+							})
+							current = group{
+								x: interval{current.x.left, value}, m: current.m, a: current.a, s: current.s,
+								workflow: current.workflow,
+							}
 						}
+					default:
+						panic("not implemented for " + matcher + target)
 					}
-				default:
-					panic("not implemented for " + matcher)
 				}
 			}
+			return gs
 		}
-		result[name] = functions
 	}
 	return result
 }

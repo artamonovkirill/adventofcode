@@ -7,5 +7,5 @@ import (
 
 func TestSolve(t *testing.T) {
 	// expect:
-	assert.Equal(t, Solve("example.txt"), 19114)
+	assert.Equal(t, Solve("example.txt"), 167409079868000)
 }
