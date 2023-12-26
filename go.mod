@@ -3,7 +3,7 @@ module github.com/advendofcode
 go 1.21
 
 require (
-	github.com/deckarep/golang-set/v2 v2.5.0
+	github.com/deckarep/golang-set/v2 v2.6.0
 	gotest.tools v2.2.0+incompatible
 )
 
