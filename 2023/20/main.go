@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/advendofcode/util"
+	"math/big"
 	"strings"
 )
 
@@ -35,7 +36,7 @@ func Solve(file string, pushes int) int {
 	return highs * lows
 }
 
-func Solve2(file string) map[string][]int {
+func Solve2(file string) int {
 	receivers, modules := parse(file)
 
 	pushes := 0
@@ -48,13 +49,20 @@ func Solve2(file string) map[string][]int {
 
 		cont := false
 		for _, v := range cycles {
-			if len(v) < 3 {
+			if len(v) < 1 {
 				cont = true
 				break
 			}
 		}
 		if !cont {
-			return cycles
+			result := 1
+			for _, cycle := range cycles {
+				if !big.NewInt(int64(cycle[0])).ProbablyPrime(0) {
+					panic("cannot handle non-primes")
+				}
+				result *= cycle[0]
+			}
+			return result
 		}
 
 		signals := []signal{
@@ -163,16 +171,4 @@ func parse(file string) (map[string][]string, map[string]interface{}) {
 func main() {
 	fmt.Println(Solve("2023/20/input.txt", 1000))
 	fmt.Println(Solve2("2023/20/input.txt"))
-	fmt.Println(minDivisable(3947, 3793, 4003, 4019))
-}
-
-func minDivisable(a int, b int, c int, d int) int {
-	i := 0
-	for {
-		i++
-		value := d * i
-		if value%a == 0 && value%b == 0 && value%c == 0 {
-			return value
-		}
-	}
 }
