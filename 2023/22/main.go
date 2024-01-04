@@ -5,6 +5,7 @@ import (
 	"github.com/advendofcode/util"
 	"math"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -19,16 +20,41 @@ type brick struct {
 
 func Solve(file string) int {
 	bricks, stack := parse(file)
+	fall(bricks, stack)
+	return len(findRedundant(bricks, stack))
+}
 
-	sort.Slice(bricks, func(i, j int) bool {
-		return minZ(bricks[i]) < minZ(bricks[j])
-	})
+func Solve2(file string) int {
+	bs, s := parse(file)
+	fall(bs, s)
+	redundant := findRedundant(bs, s)
 
+	result := 0
+	for i, b := range bs {
+		if !redundant[b.name] {
+			bricks, stack := parse(file)
+			fall(bricks, stack)
+
+			rest := append(bricks[:i], bricks[i+1:]...)
+			for e := range b.elements {
+				delete(stack, e)
+			}
+
+			fallen := fall(rest, stack)
+			result += fallen
+		}
+	}
+
+	return result
+}
+
+func fall(bricks []brick, stack map[point]string) int {
 	i := 0
+	fallen := make(map[string]bool)
 falling:
 	for {
 		if i == len(bricks) {
-			return findRedundant(bricks, stack)
+			return len(fallen)
 		}
 
 		b := bricks[i]
@@ -45,6 +71,7 @@ falling:
 			}
 		}
 		bricks[i] = newBrick
+		fallen[newBrick.name] = true
 		for e := range b.elements {
 			stack[e] = ""
 		}
@@ -78,7 +105,7 @@ func parse(file string) ([]brick, map[point]string) {
 		endY := util.Number(end[1])
 		startZ := util.Number(start[2])
 		endZ := util.Number(end[2])
-		name := string('A' + int32(i))
+		name := strconv.Itoa(i)
 		b := brick{
 			name:     name,
 			elements: make(map[point]bool),
@@ -93,10 +120,13 @@ func parse(file string) ([]brick, map[point]string) {
 		}
 		bricks[i] = b
 	}
+	sort.Slice(bricks, func(i, j int) bool {
+		return minZ(bricks[i]) < minZ(bricks[j])
+	})
 	return bricks, stack
 }
 
-func findRedundant(bricks []brick, stack map[point]string) int {
+func findRedundant(bricks []brick, stack map[point]string) map[string]bool {
 	supports := make(map[string]map[string]bool)
 
 	for _, b := range bricks {
@@ -121,15 +151,15 @@ func findRedundant(bricks []brick, stack map[point]string) int {
 
 	result := make(map[string]bool)
 	for _, b := range bricks {
-		if indestructible[b.name] {
-			continue
+		if !indestructible[b.name] {
+			result[b.name] = true
 		}
-		result[b.name] = true
 	}
 
-	return len(result)
+	return result
 }
 
 func main() {
 	fmt.Println(Solve("2023/22/input.txt"))
+	fmt.Println(Solve2("2023/22/input.txt"))
 }
