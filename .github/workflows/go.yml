@@ -2,9 +2,11 @@ name: Go
 
 on:
   push:
-    path-ignore:
-      - 2021/
-      - .github/workflows/gradle.yml
+    paths:
+      - .github/workflows/go.yml
+      - 2020/
+      - 2022/
+      - 2023/
 
 jobs:
   build:
