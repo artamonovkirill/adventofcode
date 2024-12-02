@@ -10,5 +10,5 @@ func Solve(file string) int {
 }
 
 func main() {
-	fmt.Println(Solve("template/input.txt"))
+	fmt.Println(Solve("template/puzzle.txt"))
 }
