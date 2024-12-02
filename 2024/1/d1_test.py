@@ -1,4 +1,4 @@
-from solution import solve, solve2
+from d1 import solve, solve2
 
 
 def test_solves_example():

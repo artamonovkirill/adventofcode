@@ -11,4 +11,4 @@ def solve(file: str) -> int:
 
 
 if __name__ == "__main__":
-    print(solve('template/puzzle.txt'))
+    print(solve('puzzle.txt'))
