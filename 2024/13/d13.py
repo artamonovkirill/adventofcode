@@ -2,9 +2,6 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.parent.parent))
-
-
 def count_coins(machine, x, y) -> 0:
     # ax * ai + bx * bi = x
     # ay * ai + by * bi = y
