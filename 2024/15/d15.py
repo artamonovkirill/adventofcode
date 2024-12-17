@@ -18,8 +18,6 @@ def solve(file: str) -> int:
                     r_x, r_y = x, y
                 elif c == 'O':
                     boxes[(x, y)] = True
-            width = len(line)
-            height = y + 1
         elif line:
             for move in line:
                 if move == '>':
@@ -59,15 +57,6 @@ def solve2(file: str) -> int:
     boxes = dict()
     r_x, r_y = 0, 0
 
-    def symbol(x, y):
-        if (x, y) in walls:
-            return '#'
-        elif (x, y) in boxes:
-            return boxes[(x, y)]
-        elif x == r_x and y == r_y:
-            return '@'
-        return '.'
-
     def find_moves(r_x, r_y, dy):
         moves = set()
         current = {(r_x, r_y + dy)}
@@ -103,8 +92,6 @@ def solve2(file: str) -> int:
                 elif c == 'O':
                     boxes[(2 * x, y)] = '['
                     boxes[(2 * x + 1, y)] = ']'
-            width = 2 * len(line)
-            height = y + 1
         elif line:
             print(line)
             for move in line:
