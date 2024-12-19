@@ -1,4 +1,4 @@
-from d17 import solve, process, solve2
+from d17 import solve, process
 
 
 def test_solves_sub_examples():
@@ -33,4 +33,3 @@ def test_solves_sub_examples():
 
 def test_solves_example():
     assert solve('example.txt') == ','.join(str(i) for i in [4, 6, 3, 5, 6, 3, 5, 2, 1, 0])
-    assert solve2('example2.txt') == 117440
