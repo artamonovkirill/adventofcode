@@ -1,6 +1,5 @@
 import re
 from pathlib import Path
-from typing import Tuple
 
 from util.d2 import neighbours
 
@@ -31,11 +30,8 @@ def solve(file: str, n: int, size: int) -> int:
                         steps[(next_x, next_y)] = next_steps
         current = nxt
 
-    # print()
-    # for y in range(size):
-    #     print(''.join('#' if (x, y) in bytes else '.' for x in range(size)))
-
     return steps[(size - 1, size - 1)]
+
 
 def solve2(file: str, n: int, size: int) -> tuple[int, int]:
     path = Path(__file__).parent / file
@@ -47,7 +43,7 @@ def solve2(file: str, n: int, size: int) -> tuple[int, int]:
         assert len(match) == 2
         all_bytes.append((int(match[0]), int(match[1])))
 
-    for i in range(n+1, len(all_bytes)+1):
+    for i in range(n + 1, len(all_bytes) + 1):
         blocked = set(all_bytes[:i])
         current = {(0, 0)}
         steps = {(0, 0): 0}
@@ -65,13 +61,10 @@ def solve2(file: str, n: int, size: int) -> tuple[int, int]:
         if (size - 1, size - 1) in steps:
             continue
         else:
-            return all_bytes[i-1]
-
-    # print()
-    # for y in range(size):
-    #     print(''.join('#' if (x, y) in bytes else '.' for x in range(size)))
+            return all_bytes[i - 1]
 
     raise NotImplementedError()
+
 
 if __name__ == "__main__":
     print(solve('puzzle.txt', 1024, 71))

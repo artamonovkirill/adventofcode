@@ -1,9 +1,6 @@
-import sys
 from pathlib import Path
 
 from util.d2 import neighbours
-
-sys.path.append(str(Path(__file__).parent.parent.parent))
 
 
 def solve(file: str) -> int:

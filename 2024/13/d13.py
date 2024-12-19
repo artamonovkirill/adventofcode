@@ -1,6 +1,6 @@
 import re
-import sys
 from pathlib import Path
+
 
 def count_coins(machine, x, y) -> 0:
     # ax * ai + bx * bi = x
