@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 numeric_keys = [
@@ -55,56 +56,88 @@ numeric_keyboard = init(numeric_keys)
 directional_keyboard = init(directional_keys)
 
 
-def type_on(keyboard: dict, code: str) -> set[str]:
+def type_on(keyboard: dict, code: str) -> set:
     current = code[0]
     sequence = code[0]
     paths = {p + 'A' for p in keyboard['A'][current]}
     for c in code[1:]:
-        best = None
+        next_paths = set()
         for path in paths:
             for connection in keyboard[current][c]:
                 next_path = path + connection + 'A'
-                size = len(next_path)
-                if best is None or best > size:
-                    best = size
-                    next_paths = {next_path}
-                elif best == size:
-                    next_paths.add(next_path)
+                next_paths.add(next_path)
         paths = next_paths
         sequence += c
         current = c
-    return paths, best
+    return paths
 
 
-def type_sequentially(code: str, keyboards: list[dict]) -> set[str]:
-    paths, best = type_on(keyboards[0], code)
-    for keyboard in keyboards[1:]:
-        print(code, )
-        best = None
-        for path in paths:
-            next_paths, size = type_on(keyboard, path)
-            if best is None or best > size:
-                best = size
-                next_next_paths = next_paths
-            elif best == size:
-                for p in next_paths:
-                    next_next_paths.add(p)
-        paths = next_next_paths
-    return paths, best
+directional_cache = dict()
 
 
-def solve(file: str) -> int:
-    layers = [numeric_keyboard, directional_keyboard, directional_keyboard]
+def type_directions(code: str):
+    if code not in directional_cache:
+        paths = type_on(directional_keyboard, code)
+        value = []
+        for p in paths:
+            matches = re.findall(r'[^A]*A', p)
+            assert len(matches) > 0
+            value.append(matches)
+            directional_cache[code] = value
+    return directional_cache[code]
+
+
+sequences = [
+    'A',
+    '<A', '>A', 'vA', '^A',
+    # three
+    'v<A', 'v>A', 'vvA',
+    '<vA', '<^A', '<^A', '<<A',
+    '^>A', '^<A', '^^A',
+    '>^A', '>vA', '>>A',
+    # fours
+    '^^^A', '^>^>A', '^>>^A', '^<<^A', '^<<A', '^^>A', '^>^A',
+    '<v<A', '<^<A',
+    '>>^A', '>^>A', '>vvA', '>>vA', '>v>A', '>^^A',
+    'v<<A', 'vv>A' 'v>vA', 'vvvA', 'v>vA', 'vv>A', 'v>>A',
+    # fives
+    '^^>>A', '>>^^A', '>^>^A', '<^<^A', '<^^<A', '^^<<A', '^<^<A', '>^^>A', '<<^^A',
+    # sixes
+    '<^<^^A', '<^^<^A', '<^^^<A',
+    '^^^<<A', '^<^<^A', '^^<^<A', '^<<^^A', '^<^^<A', '^^<<^A']
+
+
+def solve(file: str, n: int = 25) -> int:
+    cache = {0: dict()}
+    for sequence in sequences:
+        cache[0][sequence] = len(sequence)
+    for i in range(1, n + 1):
+        cache[i] = dict()
+        for sequence in sequences:
+            alternatives = type_directions(sequence)
+            for alternative in alternatives:
+                size = sum(cache[i - 1][s] for s in alternative)
+                if sequence not in cache[i] or size < cache[i][sequence]:
+                    cache[i][sequence] = size
+
+    complexity = 0
 
     path = Path(__file__).parent / file
     with path.open() as f:
         content = f.readlines()
-    complexity = 0
     for line in content:
-        _, size = type_sequentially(line.rstrip(), layers)
-        complexity += size * int(line[0:3])
+        code = line.rstrip()
+        best = None
+        paths = type_on(numeric_keyboard, code)
+        for p in paths:
+            size = sum(cache[n][m] for m in re.findall(r'[^A]+A', p))
+            if best is None or size < best:
+                best = size
+        complexity += best * int(line[0:3])
+
     return complexity
 
 
 if __name__ == "__main__":
-    print(solve('puzzle.txt'))
+    print(solve('puzzle.txt', 2))
+    print(solve('puzzle.txt', 25))
