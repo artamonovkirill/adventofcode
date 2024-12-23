@@ -1,4 +1,4 @@
-from d20 import solve
+from d20 import solve, solve2
 
 
 def test_solves_example():
@@ -14,4 +14,21 @@ def test_solves_example():
         38: 1,
         40: 1,
         64: 1
+    }
+
+    assert solve2('example.txt', 50) == {
+        50: 32,
+        52: 31,
+        54: 29,
+        56: 39,
+        58: 25,
+        60: 23,
+        62: 20,
+        64: 19,
+        66: 12,
+        68: 14,
+        70: 12,
+        72: 22,
+        74: 4,
+        76: 3
     }

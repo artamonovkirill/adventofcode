@@ -10,10 +10,8 @@ def solve(file: str) -> dict:
         content = f.readlines()
 
     walls = set()
-    start = None, None
-    end = None
-    width = len(content[0].rstrip())
-    height = len(content)
+    start, end = None, None
+    width, height = len(content[0].rstrip()), len(content)
     for y, line in enumerate(content):
         for x, c in enumerate(line.rstrip()):
             if c == '#':
@@ -76,6 +74,75 @@ def solve(file: str) -> dict:
     return dict(cheats)
 
 
+def solve2(file: str, minimum: int) -> dict:
+    path = Path(__file__).parent / file
+    with path.open() as f:
+        content = f.readlines()
+
+    walls, free = set(), set()
+    start, end = None, None
+    width, height = len(content[0].rstrip()), len(content)
+    for y, line in enumerate(content):
+        for x, c in enumerate(line.rstrip()):
+            if c == '#':
+                walls.add((x, y))
+            else:
+                free.add((x, y))
+                if c == 'S':
+                    start = x, y
+                elif c == 'E':
+                    end = x, y
+    assert start
+    assert end
+    assert len(free) + len(walls) == width * height
+    assert all(f not in walls for f in free)
+    assert all(w not in free for w in walls)
+
+    costs = dict()
+    for ref in [start, end]:
+        costs[ref] = {ref: 0}
+        current = {ref}
+        while len(current) > 0:
+            nxt = set()
+            for x, y in current:
+                for dx, dy in neighbours():
+                    nx, ny = x + dx, y + dy
+                    if (nx, ny) in free:
+                        cost = costs[ref][(x, y)] + 1
+                        if (nx, ny) not in costs[ref]:
+                            costs[ref][(nx, ny)] = cost
+                            nxt.add((nx, ny))
+                        elif costs[ref][(nx, ny)] > cost:
+                            raise NotImplementedError()
+            current = nxt
+    assert costs[start][end] == costs[end][start]
+    reference = costs[start][end]
+
+    cheats = dict()
+    for x, y in free:
+        cheats[(x, y)] = dict()
+        for dx in range(-20, 21):
+            for dy in range(-20, 21):
+                length = abs(dx) + abs(dy)
+                if length <= 20:
+                    nx, ny = x + dx, y + dy
+                    if (nx, ny) != (x, y) and (nx, ny) in free:
+                        if (nx, ny) not in cheats[(x, y)] or length < cheats[(x, y)][(nx, ny)]:
+                            cheats[(x, y)][(nx, ny)] = length
+
+    counts = defaultdict(lambda: 0)
+    for frm in cheats:
+        for to in cheats[frm]:
+            total = costs[start][frm] + cheats[frm][to] + costs[end][to]
+            save = reference - total
+            if save >= minimum:
+                counts[save] += 1
+
+    return {c: counts[c] for c in counts}
+
+
 if __name__ == "__main__":
     cheats = solve('puzzle.txt')
     print(sum(cheats[c] for c in cheats if c >= 100))
+    cheats = solve2('puzzle.txt', 100)
+    print(sum(cheats[c] for c in cheats))
