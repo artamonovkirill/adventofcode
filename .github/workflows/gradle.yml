@@ -13,9 +13,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 21
           distribution: temurin
           cache: gradle
-      - run: |
-          cd 2021
-          ./gradlew build --no-daemon --max-workers 2 --scan
+      - name: Test
+        working-directory: '2021'
+        run: ./gradlew build --no-daemon --max-workers 2 --scan
