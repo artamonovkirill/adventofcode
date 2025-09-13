@@ -90,7 +90,7 @@ ingredients:
 		products.Allergens[allergen] = ingredient
 		return products, nil
 	}
-	return Products{}, fmt.Errorf("failed to remove " + allergen)
+	return Products{}, errors.New("failed to remove " + allergen)
 }
 
 func findFirst(foods []Food, f func(Food) bool) (Food, error) {
