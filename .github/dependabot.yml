@@ -4,14 +4,14 @@ updates:
     directory: /2021
     schedule:
       interval: cron
-      cron: "* * 22 * *"
+      cron: "* * 23 * *"
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: cron
-      cron: "* * 22 * *"
+      cron: "* * 23 * *"
   - package-ecosystem: gomod
     directory: /
     schedule:
       interval: cron
-      cron: "* * 22 * *"
+      cron: "* * 23 * *"
