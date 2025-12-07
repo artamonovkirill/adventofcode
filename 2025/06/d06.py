@@ -57,7 +57,6 @@ def solve2(file: str) -> int:
             n = n.strip()
             if n == '':
                 lines = nxt
-                print(ns)
                 break
             ns.append(n)
             if op == '+':
