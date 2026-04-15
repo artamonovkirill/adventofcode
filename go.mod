@@ -1,6 +1,6 @@
 module github.com/advendofcode
 
-go 1.25.1
+go 1.26.2
 
 require (
 	github.com/deckarep/golang-set/v2 v2.8.0
