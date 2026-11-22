@@ -4,6 +4,7 @@ go 1.26.2
 
 require (
 	github.com/deckarep/golang-set/v2 v2.9.0
+	github.com/deckarep/golang-set/v3 v3.0.0
 	gotest.tools v2.2.0+incompatible
 )
 
